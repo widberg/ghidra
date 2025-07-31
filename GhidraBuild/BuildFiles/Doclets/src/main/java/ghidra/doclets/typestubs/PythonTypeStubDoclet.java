@@ -260,6 +260,31 @@ public class PythonTypeStubDoclet implements Doclet {
 		}
 	}
 
+	void printReExports(PrintWriter printer, PackageElement el) {
+		String baseName = PythonTypeStubElement.sanitizeQualifiedName(el);
+		String basePrefix = baseName + ".";
+		Set<String> subpackage_names = new TreeSet<>();
+
+		for (Element e : docEnv.getIncludedElements()) {
+			if (!(e instanceof PackageElement)) continue;
+			PackageElement pkg = (PackageElement)e;
+			String fullName = PythonTypeStubElement.sanitizeQualifiedName(pkg);
+
+			if (!fullName.startsWith(basePrefix) || fullName.equals(baseName)) {
+				continue;
+			}
+
+			String remainder = fullName.substring((basePrefix.length()));
+			if (remainder.indexOf('.') == -1) {
+				subpackage_names.add(remainder);
+			}
+		}
+
+		for (String subpackage_name : subpackage_names) {
+			printer.printf("from . import %1$s as %1$s\n", subpackage_name);
+		}
+	}
+
 	/**
 	 * Checks if the provided element is deprecated
 	 *
