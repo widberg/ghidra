@@ -18,6 +18,8 @@ package ghidra.program.util.string;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import ghidra.app.plugin.core.string.StringTableOptions;
 import ghidra.program.model.address.*;
 import ghidra.program.model.data.DataType;
@@ -102,7 +104,7 @@ public abstract class AbstractStringSearcher {
 	 * @param monitor the user monitor
 	 * @return the updated address set used for the search
 	 */
-	public AddressSetView search(AddressSetView addressSet, FoundStringCallback callback,
+	public AddressSetView search(@Nullable AddressSetView addressSet, FoundStringCallback callback,
 			boolean searchLoadedMemoryBlocksOnly, TaskMonitor monitor) {
 
 		addressSet = addressSet == null ? program.getMemory() : addressSet;

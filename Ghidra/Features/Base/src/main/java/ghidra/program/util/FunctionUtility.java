@@ -17,6 +17,8 @@ package ghidra.program.util;
 
 import java.util.*;
 
+import javax.annotation.Nullable;
+
 import generic.theme.GThemeDefaults.Colors.Palette;
 import ghidra.program.model.address.Address;
 import ghidra.program.model.data.*;
@@ -108,7 +110,7 @@ public class FunctionUtility {
 	 * @throws CircularDependencyException if namespaces have circular references
 	 */
 	public static void applySignature(Function destinationFunction, Function sourceFunction,
-			boolean applyEmptyComposites, DataTypeConflictHandler conflictHandler)
+			boolean applyEmptyComposites, @Nullable DataTypeConflictHandler conflictHandler)
 			throws InvalidInputException, DuplicateNameException, CircularDependencyException {
 
 		if (conflictHandler == null) {

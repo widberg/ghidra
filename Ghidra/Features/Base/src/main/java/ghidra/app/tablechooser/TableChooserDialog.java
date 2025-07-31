@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
@@ -78,7 +79,7 @@ public class TableChooserDialog extends DialogComponentProvider
 	private Callback closedCallback = Callback.dummy();
 
 	public TableChooserDialog(PluginTool tool, TableChooserExecutor executor, Program program,
-			String title, Navigatable navigatable, boolean isModal) {
+			String title, @Nullable Navigatable navigatable, boolean isModal) {
 
 		super(title, isModal, true, true, true);
 		this.tool = tool;
@@ -96,7 +97,7 @@ public class TableChooserDialog extends DialogComponentProvider
 	}
 
 	public TableChooserDialog(PluginTool tool, TableChooserExecutor executor, Program program,
-			String title, Navigatable navigatable) {
+			String title, @Nullable Navigatable navigatable) {
 		this(tool, executor, program, title, navigatable, false);
 	}
 

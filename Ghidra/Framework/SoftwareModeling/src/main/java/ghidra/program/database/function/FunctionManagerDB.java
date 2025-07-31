@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 
 import db.*;
@@ -506,6 +508,7 @@ public class FunctionManagerDB implements FunctionManager {
 	}
 
 	@Override
+	@Nullable
 	public Function getFunctionAt(Address entryPoint) {
 		lock.acquire();
 		try {

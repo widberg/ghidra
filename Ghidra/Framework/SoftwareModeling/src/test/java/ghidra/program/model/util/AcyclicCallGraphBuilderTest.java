@@ -19,6 +19,8 @@ import static ghidra.util.task.TaskMonitor.*;
 
 import java.util.*;
 
+import javax.annotation.Nullable;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -286,6 +288,7 @@ public class AcyclicCallGraphBuilderTest extends AbstractGenericTest {
 	private FunctionManager createFunctionManager() {
 		return new StubFunctionManager() {
 			@Override
+			@Nullable
 			public Function getFunctionAt(Address addr) {
 				return functionMap.get(addr);
 			}

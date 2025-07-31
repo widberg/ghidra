@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import ghidra.framework.data.OpenMode;
 import ghidra.program.database.ProgramDB;
 import ghidra.program.database.function.OverlappingFunctionException;
@@ -102,6 +104,7 @@ public class DBTraceProgramViewFunctionManager implements FunctionManager {
 	}
 
 	@Override
+	@Nullable
 	public Function getFunctionAt(Address entryPoint) {
 		return null;
 	}

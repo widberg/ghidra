@@ -18,6 +18,8 @@ package ghidra.program.model.listing;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.annotation.Nullable;
+
 import ghidra.program.database.ManagerDB;
 import ghidra.program.database.function.OverlappingFunctionException;
 import ghidra.program.model.address.Address;
@@ -138,6 +140,7 @@ public interface FunctionManager extends ManagerDB {
 	 * @param entryPoint the entry point
 	 * @return null if there is no function at entryPoint
 	 */
+	@Nullable
 	public Function getFunctionAt(Address entryPoint);
 
 	/**

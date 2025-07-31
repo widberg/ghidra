@@ -17,6 +17,8 @@ package ghidra.program.model.symbol;
 
 import java.util.*;
 
+import javax.annotation.Nullable;
+
 import ghidra.program.database.symbol.*;
 import ghidra.program.model.address.*;
 import ghidra.program.model.listing.*;
@@ -311,7 +313,7 @@ public interface SymbolTable {
 	 * @throws IllegalArgumentException if the given parent namespace is from a different program
 	 *         than that of this symbol table
 	 */
-	public Namespace getNamespace(String name, Namespace namespace);
+	public Namespace getNamespace(String name, @Nullable Namespace namespace);
 
 	/**
 	 * Get all the symbols with the given name

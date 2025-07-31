@@ -17,6 +17,8 @@ package ghidra.feature.vt.db;
 
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import org.junit.After;
 import org.junit.Before;
 
@@ -185,6 +187,7 @@ public abstract class VTBaseTestCase extends AbstractGenericTest {
 		}
 
 		@Override
+		@Nullable
 		public Function getFunctionAt(Address entryPoint) {
 			return null;
 		}

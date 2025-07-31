@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import ghidra.app.cmd.comments.SetCommentCmd;
 import ghidra.app.cmd.disassemble.DisassembleCommand;
 import ghidra.app.cmd.function.CreateFunctionCmd;
@@ -1965,6 +1967,7 @@ public class FlatProgramAPI {
 	 * @return the address. Otherwise, return null if the string fails to evaluate
 	 * to a legitimate address
 	 */
+	@Nullable
 	public final Address toAddr(String addressString) {
 		return AddressEvaluator.evaluate(currentProgram, addressString);
 	}

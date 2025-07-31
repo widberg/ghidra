@@ -17,6 +17,8 @@ package ghidra.features.base.values;
 
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import docking.Tool;
 import docking.widgets.values.GValuesMap;
 import ghidra.framework.model.DomainFile;
@@ -67,7 +69,7 @@ public class GhidraValuesMap extends GValuesMap {
 	 * @param program the program used to get an {@link AddressFactory} for parsing addresses
 	 * @return the new AddressValue that was defined.
 	 */
-	public AddressValue defineAddress(String name, Address defaultValue, Program program) {
+	public AddressValue defineAddress(String name, @Nullable Address defaultValue, Program program) {
 		checkDup(name);
 		AddressValue value = new AddressValue(name, defaultValue, program);
 		valuesMap.put(name, value);
@@ -222,7 +224,7 @@ public class GhidraValuesMap extends GValuesMap {
 	 * @throws CancelledException if the operation is cancelled
 	 * @throws IllegalArgumentException if the name hasn't been defined as a project folder type
 	 */
-	public Program getProgram(String name, Object consumer, Tool tool, boolean upgradeIfNeeded)
+	public Program getProgram(String name, Object consumer, @Nullable Tool tool, boolean upgradeIfNeeded)
 			throws VersionException, IOException, CancelledException {
 		ProgramFileValue programFileValue = getValue(name, ProgramFileValue.class, "Program");
 		return programFileValue.openProgram(consumer, tool, upgradeIfNeeded, monitor);
