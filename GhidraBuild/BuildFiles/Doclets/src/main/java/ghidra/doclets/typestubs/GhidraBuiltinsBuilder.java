@@ -126,11 +126,11 @@ class GhidraBuiltinsBuilder {
 	private void printFields(PrintWriter printer, Set<String> exports) {
 		// always use false for static so typing.ClassVar is not emitted
 		for (VariableElement field : api.getFields(true)) {
-			api.printField(field, printer, INDENT, false);
+			api.printField(field, printer, INDENT, false, PythonTypeStubElement.isNullable(field));
 			exports.add('"' + field.getSimpleName().toString() + '"');
 		}
 		for (VariableElement field : script.getFields(true)) {
-			script.printField(field, printer, INDENT, false);
+			script.printField(field, printer, INDENT, false, PythonTypeStubElement.isNullable(field));
 			exports.add('"' + field.getSimpleName().toString() + '"');
 		}
 		printer.print(INDENT);

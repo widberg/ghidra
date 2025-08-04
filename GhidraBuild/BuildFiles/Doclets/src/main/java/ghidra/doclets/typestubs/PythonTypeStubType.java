@@ -266,7 +266,7 @@ class PythonTypeStubType extends PythonTypeStubElement<TypeElement> {
 		}
 		printClassLiteralField(printer, indent);
 		for (VariableElement field : getFields()) {
-			printField(field, printer, indent, isStatic(field));
+			printField(field, printer, indent, isStatic(field), isNullable(field));
 		}
 		printer.println();
 		ListIterator<PythonTypeStubMethod> methodIterator = getMethods().listIterator();
@@ -293,7 +293,7 @@ class PythonTypeStubType extends PythonTypeStubElement<TypeElement> {
 	 * @param indent the indentation
 	 * @param isStatic true if the field is static
 	 */
-	void printField(VariableElement field, PrintWriter printer, String indent, boolean isStatic) {
+	void printField(VariableElement field, PrintWriter printer, String indent, boolean isStatic, boolean isOptional) {
 		String name = sanitize(field.getSimpleName());
 		printer.print(indent);
 		printer.print(name);
@@ -308,6 +308,10 @@ class PythonTypeStubType extends PythonTypeStubElement<TypeElement> {
 			TypeMirror type = field.asType();
 			printer.print(": ");
 			String sanitizedType = sanitizeQualifiedName(type);
+
+			if (isOptional) {
+				sanitizedType = applyOptional(sanitizedType);
+			}
 
 			// only one of these may be applied
 			// prefer Final over ClassVar
@@ -347,6 +351,19 @@ class PythonTypeStubType extends PythonTypeStubElement<TypeElement> {
 	private static String applyClassVar(String type) {
 		if (!type.isEmpty()) {
 			return "typing.ClassVar[" + type + ']';
+		}
+		return type;
+	}
+
+	/**
+	 * Wraps the provided type in typing.Optional
+	 *
+	 * @param type the type to wrap
+	 * @return the wrapped type
+	 */
+	static String applyOptional(String type) {
+		if (!type.isEmpty()) {
+			return "typing.Optional[" + type + ']';
 		}
 		return type;
 	}

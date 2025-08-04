@@ -18,6 +18,8 @@ package ghidra.doclets.typestubs;
 import java.io.PrintWriter;
 import java.util.*;
 
+import javax.annotation.Nullable;
+import javax.lang.model.AnnotatedConstruct;
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
 
@@ -330,6 +332,16 @@ abstract class PythonTypeStubElement<T extends Element> {
 	 */
 	static boolean isStatic(Element el) {
 		return el.getModifiers().contains(Modifier.STATIC);
+	}
+
+	/**
+	 * Checks if the provided annotated construct is nullable
+	 *
+	 * @param el the annotated construct to check
+	 * @return true if the annotated construct is nullable
+	 */
+	static boolean isNullable(AnnotatedConstruct ac) {
+		return ac.getAnnotation(Nullable.class) != null;
 	}
 
 	/**

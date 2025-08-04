@@ -293,6 +293,7 @@ final class PythonTypeStubMethod extends PythonTypeStubElement<ExecutableElement
 	private void printSignature(PrintWriter printer, boolean isStatic) {
 		List<String> names = getParameterNames();
 		List<? extends TypeMirror> types = getParameterTypes();
+		List<Boolean> nullabilities = getParameterNullabilities();
 		StringBuilder args = new StringBuilder();
 
 		if (!isStatic) {
@@ -305,11 +306,11 @@ final class PythonTypeStubMethod extends PythonTypeStubElement<ExecutableElement
 			}
 			if (el.isVarArgs() && i == names.size() - 1) {
 				ArrayType type = (ArrayType) types.get(i);
-				String arg = convertParam(names.get(i), type.getComponentType());
+				String arg = convertParam(names.get(i), type.getComponentType(), false);
 				args.append('*' + arg);
 			}
 			else {
-				args.append(convertParam(names.get(i), types.get(i)));
+				args.append(convertParam(names.get(i), types.get(i), nullabilities.get(i)));
 			}
 		}
 
@@ -319,13 +320,14 @@ final class PythonTypeStubMethod extends PythonTypeStubElement<ExecutableElement
 
 		TypeMirror res = el.getReturnType();
 		printer.print(" -> ");
-		String convertedType = convertResultType(res);
-		if (convertedType != null) {
-			printer.print(convertedType);
+		String returnTypeString = convertResultType(res);
+		if (returnTypeString == null) {
+			returnTypeString = sanitizeQualifiedName(res);
 		}
-		else {
-			printer.print(sanitizeQualifiedName(res));
+		if (isNullable(el)) {
+			returnTypeString = PythonTypeStubType.applyOptional(returnTypeString);
 		}
+		printer.print(returnTypeString);
 	}
 
 	/**
@@ -372,6 +374,15 @@ final class PythonTypeStubMethod extends PythonTypeStubElement<ExecutableElement
 	}
 
 	/**
+	 * Gets a list of all the parameter nullabilities
+	 *
+	 * @return the list of parameter nullabilities
+	 */
+	private List<Boolean> getParameterNullabilities() {
+		return el.getParameters().stream().map(param -> isNullable(param)).toList();
+	}
+
+	/**
 	 * Gets the return type
 	 *
 	 * @return the return type
@@ -385,14 +396,18 @@ final class PythonTypeStubMethod extends PythonTypeStubElement<ExecutableElement
 	 *
 	 * @param name the parameter name
 	 * @param type the parameter type
+	 * @param isNullable true if the optional wrapper should be applied
 	 * @return the parameter and its type
 	 */
-	private String convertParam(String name, TypeMirror type) {
-		String convertedType = convertParamType(type);
-		if (convertedType != null) {
-			return name + ": " + convertedType;
+	private String convertParam(String name, TypeMirror type, boolean isNullable) {
+		String typeString = convertParamType(type);
+		if (typeString == null) {
+			typeString = sanitizeQualifiedName(type);
 		}
-		return name + ": " + sanitizeQualifiedName(type);
+		if (isNullable) {
+			typeString = PythonTypeStubType.applyOptional(typeString);
+		}
+		return name + ": " + typeString;
 	}
 
 	/**
